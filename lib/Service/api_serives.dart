@@ -4,7 +4,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:http/http.dart' as http;
-import 'package:project1/Model/mode.dart';
+import 'package:project1/Model/model.dart';
 
 
 
@@ -23,7 +23,7 @@ class ApiService{
   }
 
 
-  Future<Employee> getEmployeeById(int id) async {
+  /*Future<Employee> getEmployeeById(int id) async {
     final response = await http.get(Uri.parse(
         'https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/'));
     if (response.statusCode == 200) {
@@ -31,10 +31,10 @@ class ApiService{
     } else {
       throw Exception('Failed to load employee');
     }
-  }
+  } */
 
 
-  Future<void> createEmployee(Employee employee) async {
+  /*Future<void> createEmployee(Employee employee) async {
     final response = await http.post(
       Uri.parse('https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/'),
       body: jsonEncode(employee),
@@ -43,10 +43,10 @@ class ApiService{
     if (response.statusCode != 201) {
       throw Exception('Failed to create employee');
     }
-  }
+  }*/
 
 
-  Future<void> updateEmployee(Employee employee) async {
+ /* Future<void> updateEmployee(Employee employee) async {
 
 /*P_EMP_ID this parameter is the same parameter which we are writing when we call the api in postman*/
     final response = await http.put(
@@ -58,9 +58,9 @@ class ApiService{
     if (response.statusCode != 200) {
       throw Exception('Failed to update employee');
     }
-  }
+  }*/
 
-  Future<void> deleteEmployee(int id) async {
+  /*Future<void> deleteEmployee(int id) async {
 
 /*P_EMP_ID this parameter is the same parameter which we are writing when we call the api in postman*/
     final response = await http.delete(Uri.parse(
@@ -68,7 +68,7 @@ class ApiService{
     if (response.statusCode != 200) {
       throw Exception('Failed to delete employee');
     }
-  }
+  }*/
 
 }
 

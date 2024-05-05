@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:project1/Model/model.dart';
 import 'package:project1/Service/api_serives.dart';
 
 
 import 'Constants/constants.dart';
-import 'Model/mode.dart';
+
 
 
 class Home extends StatefulWidget {
@@ -31,9 +32,11 @@ class _HomeState extends State<Home> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('REST API Example'),
-      ),
-
-          ListView.builder(
+      ),body: _userModel == null || _userModel!.isEmpty
+        ? const Center(
+      child: CircularProgressIndicator(),
+    )
+        : ListView.builder(
         itemCount: _userModel!.length,
         itemBuilder: (context, index) {
           return Card(
