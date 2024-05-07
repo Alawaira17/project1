@@ -101,7 +101,7 @@ class ApiService {
     var url = Uri.parse(
         'https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/');
     try {
-      var response = await http.get(url);
+      var response = await http.put(url);
       if (response.statusCode != null && response.statusCode == 200) {
         // Convert the response body bytes to a string
         String responseBody = utf8.decode(response.bodyBytes);
@@ -126,11 +126,11 @@ class ApiService {
 //}
 
 //class ApiService {
-  Future<List<Employee>> deleteEmployee() async {
+  Future<List<Employee>> deleteEmployee(int id) async {
     var url = Uri.parse(
         'https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/');
     try {
-      var response = await http.get(url);
+      var response = await http.delete(url);
       if (response.statusCode != null && response.statusCode == 200) {
         // Convert the response body bytes to a string
         String responseBody = utf8.decode(response.bodyBytes);
@@ -151,6 +151,8 @@ class ApiService {
       throw Exception('Failed to fetch data: $e');
     }
   }
+
+
 //}
 
 }

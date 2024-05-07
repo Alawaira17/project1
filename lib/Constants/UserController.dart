@@ -1,6 +1,7 @@
 
-import 'package:project1/Model/model.dart';
 import 'package:project1/Service/api_serives.dart';
+
+import '../Model/model.dart';
 
 class UserController {
   final ApiService _apiService = ApiService();

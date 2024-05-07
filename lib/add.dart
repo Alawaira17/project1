@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:project1/Service/api_serives.dart';
 
@@ -27,28 +29,26 @@ class AddEmployeeView extends StatelessWidget {
                 int id = int.tryParse(_idController.text) ?? 0;
                 if (id != 0) {
                   try {
-                    await ApiService().createEmployee(id);
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Employee added successfully')),
-                    );
-                  } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Failed to add employee')),
-                    );
-                  }
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Please enter a valid ID')),
-                  );
-                }
-              },
-              child: const Text('Add Employee'),
-            ),
-          ],
-        ),
-      ),
+    await ApiService().createEmployee(id);
+    ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text('Employee added successfully')),
+    );
+    } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text('Failed to add employee')),
+    );
+    }
+    } else {
+    ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text('Please enter a valid ID')),
+    );
+    }
+    },  child: Text('Add Employee'),
 
-
+    )
+    ]
+    )
+      )
     );
   }
 }

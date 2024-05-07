@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:project1/add.dart';
+import 'package:project1/delete.dart';
+import 'package:project1/update.dart';
 import 'UserListView.dart';
 
 // Import your home page class
@@ -18,7 +20,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: AddEmployeeView(), // Set your home page here
+      home:  AddEmployeeView(), // Set your home page here
     );
   }
 }
