@@ -3,8 +3,6 @@ import 'package:project1/Model/model.dart';
 import 'package:project1/Service/api_serives.dart';
 
 
-import 'Constants/constants.dart';
-
 
 
 class Home extends StatefulWidget {
@@ -46,7 +44,7 @@ class _HomeState extends State<Home> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Text(_userModel![index].empID.toString()),
-                    Text(_userModel![index].empName),
+                   // Text(_userModel![index].empName),
                   ],
                 ),
                 const SizedBox(

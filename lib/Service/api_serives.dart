@@ -1,16 +1,161 @@
-// ignore_for_file: unused_import
+// ignore_for_file: unused_import, unused_local_variable, body_might_complete_normally_nullable, unnecessary_null_comparison, avoid_print
 
 import 'dart:convert';
 import 'dart:developer';
-
 import 'package:http/http.dart' as http;
+import 'package:project1/Constants/UserController.dart';
 import 'package:project1/Model/model.dart';
 
 
 
+class ApiService {
+  Future<List<Employee>> getAllEmployees() async {
+    var url = Uri.parse(
+        'https://apex.oracle.com/pls/apex/alqarar_ws/emp_tbt//emp_tbt/');
+    try {
+      var response = await http.get(url);
+      if (response.statusCode != null && response.statusCode == 200) {
+        // Convert the response body bytes to a string
+        String responseBody = utf8.decode(response.bodyBytes);
+        print(responseBody);
+        var jsonData = jsonDecode(responseBody);
+        // print(response.body);
+        List<Employee> users = [];
+        for (var item in jsonData['items']) {
+          // Convert each item into a UserModel and add to the list
+          users.add(Employee.fromJson(item));
+        }
+        return users;
+      } else {
+        throw Exception(
+            'Failed to fetch data. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch data: $e');
+    }
+  }
 
 
-class ApiService{
+//class ApiService {
+  Future<List<Employee>> getEmployeeById() async {
+    var url = Uri.parse(
+        'https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/');
+    try {
+      var response = await http.get(url);
+      if (response.statusCode != null && response.statusCode == 200) {
+        // Convert the response body bytes to a string
+        String responseBody = utf8.decode(response.bodyBytes);
+        print(responseBody);
+        var jsonData = jsonDecode(responseBody);
+        // print(response.body);
+        List<Employee> users = [];
+        for (var item in jsonData['items']) {
+          // Convert each item into a UserModel and add to the list
+          users.add(Employee.fromJson(item));
+        }
+        return users;
+      } else {
+        throw Exception(
+            'Failed to fetch data. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch data: $e');
+    }
+  }
+
+//}
+
+
+//class ApiService {
+  Future<List<Employee>> createEmployee(int id) async {
+    var url = Uri.parse(
+        'https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/');
+    try {
+      var response = await http.post(url);
+      if (response.statusCode != null && response.statusCode == 200) {
+        // Convert the response body bytes to a string
+        String responseBody = utf8.decode(response.bodyBytes);
+        print(responseBody);
+        var jsonData = jsonDecode(responseBody);
+        // print(response.body);
+        List<Employee> users = [];
+        for (var item in jsonData['items']) {
+          // Convert each item into a UserModel and add to the list
+          users.add(Employee.fromJson(item));
+        }
+        return users;
+      } else {
+        throw Exception(
+            'Failed to fetch data. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch data: $e');
+    }
+  }
+
+//}
+
+
+//class ApiService {
+  Future<List<Employee>> updateEmployee(int id) async {
+    var url = Uri.parse(
+        'https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/');
+    try {
+      var response = await http.get(url);
+      if (response.statusCode != null && response.statusCode == 200) {
+        // Convert the response body bytes to a string
+        String responseBody = utf8.decode(response.bodyBytes);
+        print(responseBody);
+        var jsonData = jsonDecode(responseBody);
+        // print(response.body);
+        List<Employee> users = [];
+        for (var item in jsonData['items']) {
+          // Convert each item into a UserModel and add to the list
+          users.add(Employee.fromJson(item));
+        }
+        return users;
+      } else {
+        throw Exception(
+            'Failed to fetch data. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch data: $e');
+    }
+  }
+
+//}
+
+//class ApiService {
+  Future<List<Employee>> deleteEmployee() async {
+    var url = Uri.parse(
+        'https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/');
+    try {
+      var response = await http.get(url);
+      if (response.statusCode != null && response.statusCode == 200) {
+        // Convert the response body bytes to a string
+        String responseBody = utf8.decode(response.bodyBytes);
+        print(responseBody);
+        var jsonData = jsonDecode(responseBody);
+        // print(response.body);
+        List<Employee> users = [];
+        for (var item in jsonData['items']) {
+          // Convert each item into a UserModel and add to the list
+          users.add(Employee.fromJson(item));
+        }
+        return users;
+      } else {
+        throw Exception(
+            'Failed to fetch data. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch data: $e');
+    }
+  }
+//}
+
+}
+
+/*class ApiService{
   Future<List<Employee>> getAllEmployees() async {
     final response = await http.get(Uri.parse(
         'https://apex.oracle.com/pls/apex/alqarar_ws/emp_tbt//emp_tbt/'));
@@ -21,6 +166,18 @@ class ApiService{
       throw Exception('Failed to load employees');
     }
   }
+  }
+*/
+
+
+
+
+
+
+
+
+
+
 
 
   /*Future<Employee> getEmployeeById(int id) async {
@@ -70,7 +227,7 @@ class ApiService{
     }
   }*/
 
-}
+
 
 /*
 
@@ -151,3 +308,29 @@ class ApiService {
 
 
  */
+
+
+
+
+
+
+/*class ApiService {
+  Future<List<Employee>?> getAllEmployees() async {
+    try {
+      var baseUrl;
+
+      var usersEndpoint;
+      var url = Uri.parse(ApiConstants.baseUrl + ApiConstants.usersEndpoint);
+      var response = await http.get(Uri.parse(
+          'https://apex.oracle.com/pls/apex/alqarar_ws/emp_tbt//emp_tbt/'));
+      if (response.statusCode == 200) {
+        List<Employee> model = userModelFromJson(response.body) as List<Employee>;
+        return model;
+      }
+    } catch (e) {
+      log(e.toString());
+    }
+  }
+
+  userModelFromJson(String body) {}
+}*/
