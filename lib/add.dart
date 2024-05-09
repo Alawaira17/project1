@@ -39,34 +39,48 @@ class AddEmployeeView extends StatelessWidget {
               decoration: const InputDecoration(labelText: 'Enter Employee Date (YYYY-MM-DD)'),
             ),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () async {
-                int id = int.tryParse(_idController.text) ?? 0;
-                String name = _nameController.text.trim();
-                String dateStr = _dateController.text.trim();
+    ElevatedButton(
+    onPressed: () async {
+    int id = int.tryParse(_idController.text) ?? 0;
+    String name = _nameController.text.trim();
+    String dateStr = _dateController.text.trim();
 
-                if (id != 0 && name.isNotEmpty && dateStr.isNotEmpty) {
-                  try {
-                    DateTime date = DateFormat('yyyy-MM-dd').parse(dateStr);
-               //     Employee employee = Employee(empID: id, empName: name, empDate: dateStr);
-                //    await ApiService().createEmployee(employee);
+    if (id != 0 && name.isNotEmpty && dateStr.isNotEmpty) {
+      try {
+        // Define the correct DateFormat pattern for parsing "DD-MMM-YYYY" format
+        DateFormat inputFormat = DateFormat('dd-MMM-yyyy', 'en_US'); // Specify locale to ensure correct month parsing
 
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Employee added successfully')),
-                    );
-                  } catch (e) {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Failed to add employee')),
-                    );
-                  }
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Please enter valid details')),
-                  );
-                }
-              },
-              child: Text('Add Employee'),
-            ),
+        // Parse the date string into a DateTime object
+        DateTime date = inputFormat.parse(dateStr);
+        DateFormat outputFormat = DateFormat('dd-MMM-yyyy', 'en_US');
+        String formattedDate = outputFormat.format(date);
+
+        // Create an Employee object with the parsed date
+        Employee employee = Employee(empId: id, empName: name, empDate: formattedDate);
+
+        // Call ApiService to create the employee
+        await ApiService().createEmployee(employee);
+
+        // Show success message using ScaffoldMessenger
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Employee added successfully')),
+        );
+      } catch (e) {
+        // Handle errors and show error message
+        print('Error: $e');
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to add employee')),
+        );
+      }
+    }  else {
+    ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(content: Text('Please enter valid details')),
+    );
+    }
+    },
+    child: Text('Add Employee'),
+    )
+
           ],
         ),
       ),

@@ -35,37 +35,70 @@ class ApiService {
     }
   }
 
-  Future<void> createEmployee(Employee employee) async {
-    var url = Uri.parse(
-        'https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/');
-    try {
-      //String responseBody = utf8.decode(response.bodyBytes);
-      //   print(responseBody);
-      //Map<String, dynamic> employeeData = {};
-      /*  Map<String, dynamic> employeeData = {
-        'emp_id': id,
-        'emp_name': name,
-        'emp_date': date,
-      }; */
-      var employeeJson = employee.toJson();
-      var response = await http.post(
-        url,
-        headers: <String, String>{
-          'Content-Type': 'application/json; charset=UTF-8',
-        },
-        body: jsonEncode(employeeJson),
-      );
 
-      if (response.statusCode == 200) {
-        print('Employee inserted successfully');
+
+  /*Future<List<Employee>> createEmployee(Employee employee) async {
+    var response = await http.post(
+      Uri.parse('https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/'),
+      body: jsonEncode(employee),
+      headers: {'Content-Type': 'application/json'},
+      encoding: Encoding.getByName('utf-8'),
+    );
+
+    if (response.statusCode == 201) {
+      // Parse the response body to get the created employee data
+     // var responseBody = jsonDecode(response.body);
+      // Explicitly specify UTF-8 encoding when decoding the response body
+      var responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
+
+      // Parse the decoded response body as JSON
+      var parsedResponse = json.decode(responseBody);
+     // var responseBody = json.decode(response.body);
+      // Assuming responseBody is a List of employees (you need to adjust based on your API response structure)
+      List<Employee> createdEmployees = (responseBody as List).map((e) => Employee.fromJson(e)).toList();
+
+      return createdEmployees;
+    } else {
+      throw Exception('Failed to create employee');
+    }
+  }*/
+
+  Future<void> createEmployee(Employee employee) async {
+    var url = Uri.parse('https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/');
+
+    try {
+      if (employee != null) {
+        var employeeJson = employee.toJson();
+        print('Employee JSON: $employeeJson');
+
+        var requestBody = jsonEncode(employeeJson);
+        print('Request Body: $requestBody');
+
+        var response = await http.post(
+          url,
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+            // Add any required headers for session handling/authentication
+          },
+          body: requestBody,
+          encoding: Encoding.getByName('utf-8'),
+        );
+
+        print('Response Status Code: ${response.statusCode}');
+        print('Response Body: ${response.body}');
+
+        if (response.statusCode == 200) {
+          print('Employee inserted successfully');
+        } else {
+          throw Exception('Failed to insert employee. Status code: ${response.statusCode}');
+        }
       } else {
-        throw Exception('Failed to insert employee. Status code: ${response.statusCode}');
+        throw Exception('Employee data is null');
       }
     } catch (e) {
       throw Exception('Failed to insert employee: $e');
     }
   }
-
 
 
   //var requestBody = jsonEncode(employeeData);
