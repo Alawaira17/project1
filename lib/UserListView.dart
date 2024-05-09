@@ -56,7 +56,7 @@ class _UserListViewState extends State<UserListView> {
           Employee myItem = _users[index]; // Get user at the current index
           return Row(
             children: [
-              Text(" Id : " + myItem.empID.toString()),
+              Text(" Id : " + myItem.empId.toString()),
               Text(" - Name : " + myItem.empName.toString()),
               Text(" Date : " + myItem.empDate.toString()),
             ],

@@ -13,4 +13,12 @@ class UserController {
       throw Exception('Failed to fetch users: $e');
     }
   }
+
+  Future<void> insertUser(Employee employee) async {
+    try {
+      await _apiService.createEmployee(employee);
+    } catch (e) {
+      throw Exception('Failed to insert user: $e');
+    }
+  }
 }

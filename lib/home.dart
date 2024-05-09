@@ -43,7 +43,7 @@ class _HomeState extends State<Home> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(_userModel![index].empID.toString()),
+                    Text(_userModel![index].empId.toString()),
                    // Text(_userModel![index].empName),
                   ],
                 ),
@@ -53,8 +53,8 @@ class _HomeState extends State<Home> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Text(_userModel![index].empName),
-                    Text(_userModel![index].empDate),
+                    Text(_userModel![index].empName.toString()),
+                    Text(_userModel![index].empDate.toString()),
                   ],
                 ),
               ],
