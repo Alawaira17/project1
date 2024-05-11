@@ -15,9 +15,9 @@ class Employee {
       // Deserialize JSON to Employee object
       factory Employee.fromJson(Map<String, dynamic> json) {
             return Employee(
-                  empId: json["P_EMP_ID"],
-                  empName: json["P_EMP_NAME"],
-                  empDate: json["P_EMP_DATE"],
+                  empId: json["emp_id"] ?? 0,
+                  empName: json["emp_name"] ?? '',
+                  empDate: json["emp_date"] ?? '',
             );
       }
 

@@ -35,34 +35,6 @@ class ApiService {
     }
   }
 
-
-
-  /*Future<List<Employee>> createEmployee(Employee employee) async {
-    var response = await http.post(
-      Uri.parse('https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/'),
-      body: jsonEncode(employee),
-      headers: {'Content-Type': 'application/json'},
-      encoding: Encoding.getByName('utf-8'),
-    );
-
-    if (response.statusCode == 201) {
-      // Parse the response body to get the created employee data
-     // var responseBody = jsonDecode(response.body);
-      // Explicitly specify UTF-8 encoding when decoding the response body
-      var responseBody = utf8.decode(response.bodyBytes, allowMalformed: true);
-
-      // Parse the decoded response body as JSON
-      var parsedResponse = json.decode(responseBody);
-     // var responseBody = json.decode(response.body);
-      // Assuming responseBody is a List of employees (you need to adjust based on your API response structure)
-      List<Employee> createdEmployees = (responseBody as List).map((e) => Employee.fromJson(e)).toList();
-
-      return createdEmployees;
-    } else {
-      throw Exception('Failed to create employee');
-    }
-  }*/
-
   Future<void> createEmployee(Employee employee) async {
     var url = Uri.parse('https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/');
 
@@ -101,135 +73,82 @@ class ApiService {
   }
 
 
-  //var requestBody = jsonEncode(employeeData);
-     // final encoding = Encoding.getByName('utf-8');
-    //  print('Encoded JSON: $requestBody');
-    //  var response = await http.post(
-    //    url,
-     //   headers: {
-    //      'Content-Type': 'application/json',
-    //    },
-    //    body: requestBody,
-    //    encoding: encoding,
-    //  ); if (response.statusCode == 200) {
-        // Decode the response body
-    //    var jsonData = jsonDecode(response.body);
+  Future<Employee> getEmployeeById(int empId) async {
+    var url = Uri.parse('https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/$empId');
 
-        // Extract and parse 'items' from the response data
-    //    if (jsonData.containsKey('items')) {
-        //  List<Employee> employees = [];
-      //    for (var item in jsonData['items']) {
-       //     employees.add(Employee.fromJson(item));
-      //    }
-      //    return employees;
-     //   } else {
-     //     throw Exception('Invalid response format: missing "items"');
-     //   }
-    //  } else {
-     //   throw Exception('FFailed to create employee. Status code: ${response.statusCode}');
-  //    }
- //   } catch (e) {
-  //    throw Exception('Failed to create employee data: $e');
- //   }
- // }
-    //  var response = await http.post(url);
-    //  if (response.statusCode != null && response.statusCode == 200) {
-        // Convert the response body bytes to a string
-      // String responseBody = utf8.decode(response.bodyBytes);
-     //   print(responseBody);
-       // var jsonData = jsonDecode(responseBody);
-        // print(response.body);
-      //  List<Employee> users = [];
-    //    for (var item in jsonData['items']) {
-          // Convert each item into a UserModel and add to the list
-      //    users.add(Employee.fromJson(item));
-    //    }
-    //    return users;
- //      throw Exception(
-        //    'Failed to fetch data. Status code: ${response.statusCode}');
-    // }
-  // } catch (e) {
-  //   throw Exception('Failed to fetch data: $e');
-  //  }
-  //}
-
-  Future<List<Employee>> getEmployeeById() async {
-    var url = Uri.parse(
-        'https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/');
     try {
       var response = await http.get(url);
-      if (response.statusCode != null && response.statusCode == 200) {
+      if (response.statusCode == 200) {
         // Convert the response body bytes to a string
         String responseBody = utf8.decode(response.bodyBytes);
-        print(responseBody);
-        var jsonData = jsonDecode(responseBody);
-        // print(response.body);
-        List<Employee> users = [];
-        for (var item in jsonData['items']) {
-          // Convert each item into a UserModel and add to the list
-          users.add(Employee.fromJson(item));
-        }
-        return users;
+        // Parse the JSON directly into an Employee object
+        Employee employee = Employee.fromJson(jsonDecode(responseBody));
+        print(employee);
+        return employee;
       } else {
-        throw Exception(
-            'Failed to fetch data. Status code: ${response.statusCode}');
+        throw Exception('Failed to fetch data. Status code: ${response.statusCode}');
       }
     } catch (e) {
       throw Exception('Failed to fetch data: $e');
     }
   }
 
-  Future<List<Employee>> updateEmployee(int id) async {
-    var url = Uri.parse(
-        'https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/');
+
+  Future<void> updateEmployee(int empId, Employee employee) async {
+    var url = Uri.parse('https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/$empId');
+
     try {
-      var response = await http.put(url);
-      if (response.statusCode != null && response.statusCode == 200) {
-        // Convert the response body bytes to a string
-        String responseBody = utf8.decode(response.bodyBytes);
-        print(responseBody);
-        var jsonData = jsonDecode(responseBody);
-        // print(response.body);
-        List<Employee> users = [];
-        for (var item in jsonData['items']) {
-          // Convert each item into a UserModel and add to the list
-          users.add(Employee.fromJson(item));
-        }
-        return users;
+      if (employee == null) {
+        throw Exception('Employee data is null');
+      }
+
+      var employeeJson = employee.toJson();
+      var requestBody = jsonEncode(employeeJson);
+
+      var response = await http.put(
+        url,
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+          // Add any required headers for session handling/authentication
+        },
+        body: requestBody,
+        encoding: Encoding.getByName('utf-8'),
+      );
+
+      if (response.statusCode == 200) {
+        print('Employee updated successfully');
       } else {
-        throw Exception(
-            'Failed to fetch data. Status code: ${response.statusCode}');
+        var errorMessage = response.body.isNotEmpty ? response.body : 'No error message provided by server';
+        throw Exception('Failed to update employee. Status code: ${response.statusCode}, Error: $errorMessage');
       }
     } catch (e) {
-      throw Exception('Failed to fetch data: $e');
+      throw Exception('Failed to update employee: $e');
     }
   }
 
-  Future<List<Employee>> deleteEmployee(int id) async {
-    var url = Uri.parse(
-        'https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/');
+
+
+
+
+  Future<void> deleteEmployee(int empId) async {
+    var url = Uri.parse('https://apex.oracle.com/pls/apex/alqarar_ws/emp_tb//emp_tb/$empId');
+
     try {
-      var response = await http.delete(url);
-      if (response.statusCode != null && response.statusCode == 200) {
-        // Convert the response body bytes to a string
-        String responseBody = utf8.decode(response.bodyBytes);
-        print(responseBody);
-        var jsonData = jsonDecode(responseBody);
-        // print(response.body);
-        List<Employee> users = [];
-        for (var item in jsonData['items']) {
-          // Convert each item into a UserModel and add to the list
-          users.add(Employee.fromJson(item));
-        }
-        return users;
+      var response = await http.delete(
+        url,
+      );
+      if (response.statusCode == 200) {
+        print('Employee deleted successfully');
       } else {
-        throw Exception(
-            'Failed to fetch data. Status code: ${response.statusCode}');
+        var errorMessage = response.body.isNotEmpty ? response.body : 'No error message provided by server';
+        throw Exception('Failed to delete employee. Status code: ${response.statusCode}, Error: $errorMessage');
       }
     } catch (e) {
-      throw Exception('Failed to fetch data: $e');
+      throw Exception('Failed to delete employee: $e');
     }
   }
+
+
 
 }
 

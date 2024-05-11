@@ -32,7 +32,7 @@ class DeleteEmployeeView extends StatelessWidget {
                     );
                   } catch (e) {
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Failed to delete employee')),
+                      SnackBar(content: Text('Failed to delete employee: $e')),
                     );
                   }
                 } else {

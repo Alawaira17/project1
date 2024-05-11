@@ -1,6 +1,7 @@
 // ignore_for_file: use_key_in_widget_constructors
 
 import 'package:flutter/material.dart';
+import 'package:project1/GetById.dart';
 import 'package:project1/add.dart';
 import 'package:project1/delete.dart';
 import 'package:project1/update.dart';
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home:  AddEmployeeView(), // Set your home page here
+      home: GetEmployeeByIdView()// Set your home page here
     );
   }
 }

@@ -1,17 +1,20 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:project1/Model/model.dart';
 import 'package:project1/Service/api_serives.dart';
 
-
-class ModifyEmployeeView extends StatelessWidget {
+class UpdateEmployeeView extends StatelessWidget {
   final TextEditingController _idController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _dateController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Modify Employee'),
+        title: const Text('Update Employee'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -20,31 +23,50 @@ class ModifyEmployeeView extends StatelessWidget {
           children: [
             TextField(
               controller: _idController,
-              decoration: InputDecoration(labelText: 'Enter Employee ID'),
+              decoration: const InputDecoration(labelText: 'Enter Employee ID'),
               keyboardType: TextInputType.number,
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _nameController,
+              decoration: const InputDecoration(labelText: 'Enter Employee Name'),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _dateController,
+              decoration: const InputDecoration(labelText: 'Enter Employee Date (YYYY-MM-DD)'),
+            ),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () async {
                 int id = int.tryParse(_idController.text) ?? 0;
-                if (id != 0) {
+                String name = _nameController.text.trim();
+                String dateStr = _dateController.text.trim();
+
+                if (id != 0 && name.isNotEmpty && dateStr.isNotEmpty) {
                   try {
-                    await ApiService().updateEmployee(id);
+                    // Create the Employee object
+                    Employee employee = Employee(empId: id, empName: name, empDate: dateStr);
+
+                    // Call the API service to update the employee
+                    await ApiService().updateEmployee(id, employee);
+
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Employee modified successfully')),
+                      SnackBar(content: Text('Employee updated successfully')),
                     );
                   } catch (e) {
+                    print('Error: $e');
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('Failed to modify employee')),
+                      SnackBar(content: Text('Failed to update employee')),
                     );
                   }
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Please enter a valid ID')),
+                    SnackBar(content: Text('Please enter valid details')),
                   );
                 }
               },
-              child: Text('Modify Employee'),
+              child: Text('Update Employee'),
             ),
           ],
         ),
